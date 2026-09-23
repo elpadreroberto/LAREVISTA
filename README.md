@@ -5,7 +5,8 @@ Artículos de *Cristo Rey en México*, publicados para consulta libre.
 https://elpadreroberto.github.io/LAREVISTA/
 
 El sitio es un solo archivo, `index.html`. Los años que todavía no tienen
-artículos aparecen atenuados en el menú.
+artículos aparecen atenuados en el menú. Marzo-abril de 2014 ya está;
+el texto es el OCR, sin la corrección de 1953–1966.
 
 Para añadir artículos más adelante:
 
