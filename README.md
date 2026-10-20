@@ -6,7 +6,7 @@ https://elpadreroberto.github.io/LAREVISTA/
 
 El sitio es un solo archivo, `index.html`. Los años que todavía no tienen
 artículos aparecen atenuados en el menú. Están los de 1953 a 1996, más
-2001, 2003 y marzo-abril de 2014. De 1966 solo está enero-febrero. 1973
+2001 a 2004 y marzo-abril de 2014. De 1966 solo está enero-febrero. 1973
 no trae enero-febrero. En 1974, septiembre a diciembre es un solo número.
 En 1975 hay seis bimestres y el papa del número es Pablo VI. En 1976,
 enero a agosto es un solo número, el del cuarto centenario de León. En
@@ -16,13 +16,15 @@ trae los seis bimestres e incluye a Juan Pablo I y a Juan Pablo II. En
 1980 hay seis bimestres. En 1981, mayo a agosto es un solo número. En
 1983, enero a abril es un solo número, otro Congreso Mariológico. De 1987
 a 1995 hay seis bimestres cada año. En 1996, enero a abril es un solo
-número. 2001 y 2003 traen seis bimestres. De 1979 a 1996, y también en
-2001 y 2003, el papa del número es Juan Pablo II. Siguen atenuados 1997 a
-2000, 2002 y 2004 a 2013. En 1987, en 1990, en parte de 1993 y 1994, y en
+número. 2001 y 2003 traen seis bimestres. En 2002 están enero-febrero,
+marzo-abril, mayo-junio, julio-agosto y una edición especial, la de la
+visita de Juan Pablo II. En 2004 están enero-febrero, marzo-abril y
+julio-agosto. De 1979 a 1996, y también de 2001 a 2004, el papa del
+número es Juan Pablo II. Siguen atenuados 1997 a 2000 y 2005 a 2013. En 1987, en 1990, en parte de 1993 y 1994, y en
 2001 salvo septiembre-octubre, varios números traen el cabezal «La
 Montaña de Cristo Rey»; el período del índice sigue siendo el bimestre.
 Marzo-abril de 2014 es el OCR, sin la corrección de 1953–1966. Los
-números de 1967 a 1996, más 2001 y 2003, salen de los Markdown ya cortados
+números de 1967 a 1996, más 2001 a 2004, salen de los Markdown ya cortados
 en artículos. Noviembre-diciembre de 1972 es un número extraordinario, el
 14–15.
 
