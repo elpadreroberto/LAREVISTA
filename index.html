@@ -33,6 +33,22 @@ html[data-theme="noche"] {
   --bg: #07111b; --paper: #0e1c2b; --ink: #e7eef6; --muted: #9aafc4;
   --line: #1c3348; --accent: #c5d9ec; --on-accent: #07111b; --bar: rgba(7,17,27,.94);
 }
+html[data-theme="tinta"] {
+  --bg: #efe6d6; --paper: #f7f1e6; --ink: #2b2118; --muted: #6f6256;
+  --line: #e0d3c2; --accent: #7a3e2a; --on-accent: #fbf6ef; --bar: rgba(247,241,230,.94);
+}
+html[data-theme="olivo"] {
+  --bg: #e5eee4; --paper: #f4f7f2; --ink: #1c2b22; --muted: #5a6b60;
+  --line: #d2ddd3; --accent: #2c5a45; --on-accent: #f4faf6; --bar: rgba(244,247,242,.94);
+}
+html[data-theme="pizarra"] {
+  --bg: #e6eaee; --paper: #f6f7f8; --ink: #1c242c; --muted: #5d6973;
+  --line: #d4dbe1; --accent: #2a3d4d; --on-accent: #f7f9fb; --bar: rgba(246,247,248,.94);
+}
+html[data-theme="vino"] {
+  --bg: #160f12; --paper: #24181c; --ink: #f6eee9; --muted: #c7aea6;
+  --line: #3c2a30; --accent: #e4b8a8; --on-accent: #1a1013; --bar: rgba(22,15,18,.94);
+}
 html[data-font="sans"] { --font: "Liberation Sans", "Nimbus Sans", "Segoe UI", sans-serif; }
 html[data-font="antigua"] { --font: Palatino, "Palatino Linotype", "Book Antiqua", "Liberation Serif", serif; }
 * { box-sizing: border-box; }
@@ -90,7 +106,47 @@ button:hover, .btn:hover { border-color: var(--accent); }
   color: var(--muted); opacity: .38; font-weight: 500; cursor: default;
 }
 .papas { align-items: center; }
-.papas button { font-size: .78rem; }
+.papas button { font-size: .78rem; border-radius: 999px; }
+.ciclo {
+  border-radius: 6px;
+  background: var(--paper);
+  color: var(--ink);
+  border-color: transparent;
+  box-shadow: inset 0 0 0 1px var(--line);
+  padding: .28rem .62rem .28rem .3rem;
+  display: inline-flex;
+  align-items: center;
+  gap: .42rem;
+  line-height: 1;
+  min-height: 1.9rem;
+}
+.ciclo:hover { box-shadow: inset 0 0 0 1px var(--accent); border-color: transparent; }
+.ciclo .muestra {
+  width: 1.2rem; height: 1.2rem; border-radius: 4px;
+  display: grid; place-items: center; flex: none;
+  background: var(--bg); color: var(--accent);
+  font-size: .72rem; font-weight: 650; letter-spacing: 0;
+}
+.ciclo .ciclo-nombre { font-variant-numeric: tabular-nums; }
+#fuente-nombre, #muestra-fuente { font-family: var(--font); letter-spacing: 0; }
+#fuente-nombre { font-size: .9rem; }
+#muestra-fuente { font-size: .82rem; background: transparent; }
+#muestra-color {
+  background: linear-gradient(135deg, var(--paper) 0 42%, var(--accent) 42% 58%, var(--ink) 58%);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.muestra-aire {
+  background:
+    linear-gradient(var(--accent), var(--accent)) center 22% / 70% 1.5px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) center 50% / 70% 1.5px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) center 78% / 70% 1.5px no-repeat,
+    var(--bg);
+}
+.muestra-ancho {
+  background:
+    linear-gradient(var(--accent), var(--accent)) center / 72% 1.5px no-repeat,
+    var(--bg);
+}
 .papa-nota {
   font-family: var(--ui); font-size: .85rem; color: var(--muted); margin: .2rem 0 0;
 }
@@ -197,16 +253,26 @@ try {
     </nav>
     <input class="buscar" id="busca" type="search" placeholder="Buscar título o autor" autocomplete="off">
     <div class="herramientas">
-      <button type="button" data-font="serif">Serif</button>
-      <button type="button" data-font="sans">Sans</button>
-      <button type="button" data-font="antigua">Antigua</button>
-      <button type="button" id="tam-menos" title="Letra más pequeña">A−</button>
-      <button type="button" id="tam-mas" title="Letra más grande">A+</button>
-      <button type="button" id="inter" title="Interlineado">Interlineado</button>
-      <button type="button" id="ancho" title="Ancho de lectura">Ancho</button>
-      <button type="button" data-theme="claro">Claro</button>
-      <button type="button" data-theme="sepia">Sepia</button>
-      <button type="button" data-theme="noche">Noche</button>
+      <button type="button" class="ciclo" id="ciclo-fuente" title="Fuente. Un clic pasa a la siguiente.">
+        <span class="muestra" id="muestra-fuente" aria-hidden="true">Aa</span>
+        <span class="ciclo-nombre" id="fuente-nombre">Serif</span>
+      </button>
+      <button type="button" class="ciclo" id="ciclo-tamano" title="Tamaño. Un clic pasa al siguiente.">
+        <span class="muestra" aria-hidden="true">A</span>
+        <span class="ciclo-nombre" id="tamano-nombre">19</span>
+      </button>
+      <button type="button" class="ciclo" id="ciclo-color" title="Color. Un clic pasa al siguiente.">
+        <span class="muestra" id="muestra-color" aria-hidden="true"></span>
+        <span class="ciclo-nombre" id="color-nombre">Sepia</span>
+      </button>
+      <button type="button" class="ciclo" id="inter" title="Interlineado">
+        <span class="muestra muestra-aire" aria-hidden="true"></span>
+        <span class="ciclo-nombre">Interlineado</span>
+      </button>
+      <button type="button" class="ciclo" id="ancho" title="Ancho de lectura">
+        <span class="muestra muestra-ancho" aria-hidden="true"></span>
+        <span class="ciclo-nombre" id="ancho-nombre">Ancho</span>
+      </button>
     </div>
   </div>
   <div class="barra-fila papas">
@@ -129986,34 +130052,69 @@ en sus Bodas de Oro Sacerdotales</p>
   ];
 
   function save(key, value) { try { localStorage.setItem(key, value); } catch (e) {} }
+  var fonts = [
+    { id: "serif", nombre: "Serif" },
+    { id: "sans", nombre: "Sans" },
+    { id: "antigua", nombre: "Antigua" }
+  ];
+  var themes = [
+    { id: "sepia", nombre: "Sepia" },
+    { id: "claro", nombre: "Claro" },
+    { id: "noche", nombre: "Noche" },
+    { id: "tinta", nombre: "Tinta" },
+    { id: "olivo", nombre: "Olivo" },
+    { id: "pizarra", nombre: "Pizarra" },
+    { id: "vino", nombre: "Vino" }
+  ];
+  function indexOfId(list, id) {
+    for (var i = 0; i < list.length; i++) if (list[i].id === id) return i;
+    return -1;
+  }
+  function paintCiclos() {
+    if (indexOfId(fonts, root.dataset.font || "serif") < 0) root.dataset.font = "serif";
+    if (indexOfId(themes, root.dataset.theme || "sepia") < 0) root.dataset.theme = "sepia";
+    var fi = indexOfId(fonts, root.dataset.font || "serif");
+    var ti = indexOfId(themes, root.dataset.theme || "sepia");
+    document.getElementById("fuente-nombre").textContent = fonts[fi].nombre;
+    document.getElementById("color-nombre").textContent = themes[ti].nombre;
+    var px = getComputedStyle(root).getPropertyValue("--size").trim() || "19px";
+    document.getElementById("tamano-nombre").textContent = px.replace("px", "");
+    document.getElementById("ciclo-fuente").setAttribute("aria-label", "Fuente " + fonts[fi].nombre + ". Un clic cambia a la siguiente.");
+    document.getElementById("ciclo-color").setAttribute("aria-label", "Color " + themes[ti].nombre + ". Un clic cambia al siguiente.");
+    document.getElementById("ciclo-tamano").setAttribute("aria-label", "Tamaño " + px + ". Un clic cambia al siguiente.");
+  }
   function paint() {
-    var font = root.dataset.font || "serif";
-    var theme = root.dataset.theme || "sepia";
-    document.querySelectorAll("[data-font]").forEach(function (b) {
-      b.setAttribute("aria-pressed", b.getAttribute("data-font") === font ? "true" : "false");
-    });
-    document.querySelectorAll("[data-theme]").forEach(function (b) {
-      b.setAttribute("aria-pressed", b.getAttribute("data-theme") === theme ? "true" : "false");
-    });
     var vista = document.body.dataset.vista;
     document.querySelectorAll("a.vista").forEach(function (a) {
       if (a.getAttribute("data-vista") === vista) a.setAttribute("aria-current", "page");
       else a.removeAttribute("aria-current");
     });
+    paintCiclos();
   }
-  document.querySelectorAll("[data-font]").forEach(function (b) {
-    b.addEventListener("click", function () {
-      root.dataset.font = b.getAttribute("data-font");
-      save("cr.font", root.dataset.font);
-      paint();
-    });
+  document.getElementById("ciclo-fuente").addEventListener("click", function () {
+    var i = indexOfId(fonts, root.dataset.font || "serif");
+    if (i < 0) i = 0;
+    var next = fonts[(i + 1) % fonts.length];
+    root.dataset.font = next.id;
+    save("cr.font", next.id);
+    paint();
   });
-  document.querySelectorAll("[data-theme]").forEach(function (b) {
-    b.addEventListener("click", function () {
-      root.dataset.theme = b.getAttribute("data-theme");
-      save("cr.theme", root.dataset.theme);
-      paint();
-    });
+  document.getElementById("ciclo-color").addEventListener("click", function () {
+    var i = indexOfId(themes, root.dataset.theme || "sepia");
+    if (i < 0) i = 0;
+    var next = themes[(i + 1) % themes.length];
+    root.dataset.theme = next.id;
+    save("cr.theme", next.id);
+    paint();
+  });
+  document.getElementById("ciclo-tamano").addEventListener("click", function () {
+    var cur = getComputedStyle(root).getPropertyValue("--size").trim();
+    var i = sizes.indexOf(cur);
+    if (i < 0) i = sizes.indexOf("19px");
+    if (i < 0) i = 0;
+    root.style.setProperty("--size", sizes[(i + 1) % sizes.length]);
+    save("cr.size", sizes[(i + 1) % sizes.length]);
+    paint();
   });
   function step(list, prop, key, dir) {
     var cur = getComputedStyle(root).getPropertyValue(prop).trim();
@@ -130028,7 +130129,7 @@ en sus Bodas de Oro Sacerdotales</p>
     root.style.setProperty("--page", widths[i][1]);
     save("cr.measure", widths[i][0]);
     save("cr.page", widths[i][1]);
-    document.getElementById("ancho").textContent = widths[i][2];
+    document.getElementById("ancho-nombre").textContent = widths[i][2];
   }
   (function () {
     var cur = getComputedStyle(root).getPropertyValue("--measure").trim() || "68ch";
@@ -130036,8 +130137,6 @@ en sus Bodas de Oro Sacerdotales</p>
     widths.forEach(function (w, n) { if (w[0] === cur) i = n; });
     applyWidth(i);
   })();
-  document.getElementById("tam-menos").addEventListener("click", function () { step(sizes, "--size", "cr.size", -1); });
-  document.getElementById("tam-mas").addEventListener("click", function () { step(sizes, "--size", "cr.size", 1); });
   document.getElementById("inter").addEventListener("click", function () { step(leads, "--lead", "cr.lead", 1); });
   document.getElementById("ancho").addEventListener("click", function () {
     var cur = getComputedStyle(root).getPropertyValue("--measure").trim();
