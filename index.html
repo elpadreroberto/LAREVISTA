@@ -135,16 +135,11 @@ button:hover, .btn:hover { border-color: var(--accent); }
   background: linear-gradient(135deg, var(--paper) 0 42%, var(--accent) 42% 58%, var(--ink) 58%);
   box-shadow: inset 0 0 0 1px var(--line);
 }
-.muestra-aire {
+.muestra-ajuste {
   background:
-    linear-gradient(var(--accent), var(--accent)) center 22% / 70% 1.5px no-repeat,
-    linear-gradient(var(--accent), var(--accent)) center 50% / 70% 1.5px no-repeat,
-    linear-gradient(var(--accent), var(--accent)) center 78% / 70% 1.5px no-repeat,
-    var(--bg);
-}
-.muestra-ancho {
-  background:
-    linear-gradient(var(--accent), var(--accent)) center / 72% 1.5px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) 18% 26% / 46% 1.5px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) 18% 50% / 68% 1.5px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) 18% 74% / 34% 1.5px no-repeat,
     var(--bg);
 }
 .papa-nota {
@@ -231,11 +226,13 @@ try {
   var s = localStorage.getItem("cr.size");
   var l = localStorage.getItem("cr.lead");
   var m = localStorage.getItem("cr.measure");
+  var g = localStorage.getItem("cr.page");
   document.documentElement.dataset.theme = t;
   document.documentElement.dataset.font = f;
   if (s) document.documentElement.style.setProperty("--size", s);
   if (l) document.documentElement.style.setProperty("--lead", l);
   if (m) document.documentElement.style.setProperty("--measure", m);
+  if (g) document.documentElement.style.setProperty("--page", g);
 } catch (e) {}
 </script>
 </head>
@@ -265,13 +262,9 @@ try {
         <span class="muestra" id="muestra-color" aria-hidden="true"></span>
         <span class="ciclo-nombre" id="color-nombre">Sepia</span>
       </button>
-      <button type="button" class="ciclo" id="inter" title="Interlineado">
-        <span class="muestra muestra-aire" aria-hidden="true"></span>
-        <span class="ciclo-nombre">Interlineado</span>
-      </button>
-      <button type="button" class="ciclo" id="ancho" title="Ancho de lectura">
-        <span class="muestra muestra-ancho" aria-hidden="true"></span>
-        <span class="ciclo-nombre" id="ancho-nombre">Ancho</span>
+      <button type="button" class="ciclo" id="ciclo-ajuste" title="Medida de lectura. Un clic cambia el ancho y el interlineado.">
+        <span class="muestra muestra-ajuste" aria-hidden="true"></span>
+        <span class="ciclo-nombre" id="ajuste-nombre">Normal</span>
       </button>
     </div>
   </div>
@@ -283,7 +276,7 @@ try {
 <section id="vista-articulos"><span id="articulos"></span>
   <div class="entrada">
     <h1>Artículos</h1>
-    <p>3533 artículos en 310 números, de 1953 a 1998, más 2000 a 2004, 2006, 2008 a 2013 y marzo-abril de 2014. Revista Cristo Rey en México. Los años atenuados del menú todavía no están en estos archivos. Cada botón de papa muestra los artículos que hablan de hechos de su período.</p>
+    <p>3533 artículos en 310 números, de 1953 a 1998, más 2000 a 2004, 2006, 2008 a 2013 y marzo-abril de 2014. Revista Cristo Rey en México. Los años atenuados del menú todavía no están en estos archivos. Cada botón con el nombre de un pontífice muestra los artículos que hablan de hechos de su período.</p>
     <p class="papa-nota" id="papa-nota"></p>
   </div>
   <p class="vacio-busqueda" id="vacio-art">Ningún artículo coincide.</p>
@@ -130043,13 +130036,26 @@ en sus Bodas de Oro Sacerdotales</p>
 (function () {
   var root = document.documentElement;
   var sizes = ["16px", "18px", "19px", "21px", "24px", "28px"];
-  var leads = ["1.45", "1.65", "1.85"];
-  var widths = [
-    ["58ch", "760px", "Estrecho"],
-    ["68ch", "1080px", "Normal"],
-    ["84ch", "1280px", "Ancho"],
-    ["100%", "100%", "Completo"]
+  var ajustes = [
+    { id: "minimo", nombre: "Mínimo", measure: "42ch", page: "600px", lead: "1.32" },
+    { id: "denso", nombre: "Denso", measure: "50ch", page: "700px", lead: "1.4" },
+    { id: "corto", nombre: "Corto", measure: "58ch", page: "760px", lead: "1.45" },
+    { id: "estrecho", nombre: "Estrecho", measure: "58ch", page: "760px", lead: "1.65" },
+    { id: "estrecho-aire", nombre: "Estrecho aire", measure: "58ch", page: "760px", lead: "1.85" },
+    { id: "lectura", nombre: "Lectura", measure: "64ch", page: "940px", lead: "1.72" },
+    { id: "normal-corto", nombre: "Normal corto", measure: "68ch", page: "1080px", lead: "1.45" },
+    { id: "normal", nombre: "Normal", measure: "68ch", page: "1080px", lead: "1.65" },
+    { id: "normal-aire", nombre: "Normal aire", measure: "68ch", page: "1080px", lead: "1.85" },
+    { id: "ancho-corto", nombre: "Ancho corto", measure: "84ch", page: "1280px", lead: "1.45" },
+    { id: "ancho", nombre: "Ancho", measure: "84ch", page: "1280px", lead: "1.65" },
+    { id: "ancho-aire", nombre: "Ancho aire", measure: "84ch", page: "1280px", lead: "1.85" },
+    { id: "amplio", nombre: "Amplio", measure: "96ch", page: "1500px", lead: "1.8" },
+    { id: "completo-corto", nombre: "Completo corto", measure: "100%", page: "100%", lead: "1.45" },
+    { id: "completo", nombre: "Completo", measure: "100%", page: "100%", lead: "1.65" },
+    { id: "completo-aire", nombre: "Completo aire", measure: "100%", page: "100%", lead: "1.85" },
+    { id: "muy-aire", nombre: "Muy aire", measure: "100%", page: "100%", lead: "2.15" }
   ];
+  var ajusteIndex = 0;
 
   function save(key, value) { try { localStorage.setItem(key, value); } catch (e) {} }
   var fonts = [
@@ -130082,6 +130088,9 @@ en sus Bodas de Oro Sacerdotales</p>
     document.getElementById("ciclo-fuente").setAttribute("aria-label", "Fuente " + fonts[fi].nombre + ". Un clic cambia a la siguiente.");
     document.getElementById("ciclo-color").setAttribute("aria-label", "Color " + themes[ti].nombre + ". Un clic cambia al siguiente.");
     document.getElementById("ciclo-tamano").setAttribute("aria-label", "Tamaño " + px + ". Un clic cambia al siguiente.");
+    var aj = ajustes[ajusteIndex];
+    document.getElementById("ajuste-nombre").textContent = aj.nombre;
+    document.getElementById("ciclo-ajuste").setAttribute("aria-label", "Medida " + aj.nombre + ". Columna " + aj.measure + ", interlineado " + aj.lead + ". Un clic cambia a la siguiente.");
   }
   function paint() {
     var vista = document.body.dataset.vista;
@@ -130116,33 +130125,38 @@ en sus Bodas de Oro Sacerdotales</p>
     save("cr.size", sizes[(i + 1) % sizes.length]);
     paint();
   });
-  function step(list, prop, key, dir) {
-    var cur = getComputedStyle(root).getPropertyValue(prop).trim();
-    var i = list.indexOf(cur);
-    if (i < 0) i = 1;
-    i = Math.max(0, Math.min(list.length - 1, i + dir));
-    root.style.setProperty(prop, list[i]);
-    save(key, list[i]);
+  function ajusteActual() {
+    var id = "";
+    try { id = localStorage.getItem("cr.ajuste") || ""; } catch (e) {}
+    var byId = indexOfId(ajustes, id);
+    if (byId >= 0) return byId;
+    var measure = getComputedStyle(root).getPropertyValue("--measure").trim();
+    var lead = parseFloat(getComputedStyle(root).getPropertyValue("--lead"));
+    var best = 0, bestScore = 1e9;
+    for (var i = 0; i < ajustes.length; i++) {
+      var same = ajustes[i].measure === measure;
+      var dl = Math.abs(parseFloat(ajustes[i].lead) - lead);
+      if (same && dl < 0.02) return i;
+      var score = (same ? 0 : 5) + (isNaN(dl) ? 2 : dl);
+      if (score < bestScore) { bestScore = score; best = i; }
+    }
+    return best;
   }
-  function applyWidth(i) {
-    root.style.setProperty("--measure", widths[i][0]);
-    root.style.setProperty("--page", widths[i][1]);
-    save("cr.measure", widths[i][0]);
-    save("cr.page", widths[i][1]);
-    document.getElementById("ancho-nombre").textContent = widths[i][2];
+  function applyAjuste(i) {
+    ajusteIndex = i;
+    var a = ajustes[i];
+    root.style.setProperty("--measure", a.measure);
+    root.style.setProperty("--page", a.page);
+    root.style.setProperty("--lead", a.lead);
+    save("cr.ajuste", a.id);
+    save("cr.measure", a.measure);
+    save("cr.page", a.page);
+    save("cr.lead", a.lead);
   }
-  (function () {
-    var cur = getComputedStyle(root).getPropertyValue("--measure").trim() || "68ch";
-    var i = 1;
-    widths.forEach(function (w, n) { if (w[0] === cur) i = n; });
-    applyWidth(i);
-  })();
-  document.getElementById("inter").addEventListener("click", function () { step(leads, "--lead", "cr.lead", 1); });
-  document.getElementById("ancho").addEventListener("click", function () {
-    var cur = getComputedStyle(root).getPropertyValue("--measure").trim();
-    var i = 0;
-    widths.forEach(function (w, n) { if (w[0] === cur) i = n; });
-    applyWidth((i + 1) % widths.length);
+  applyAjuste(ajusteActual());
+  document.getElementById("ciclo-ajuste").addEventListener("click", function () {
+    applyAjuste((ajusteIndex + 1) % ajustes.length);
+    paint();
   });
 
   function show(vista) { document.body.dataset.vista = vista; paint(); }
