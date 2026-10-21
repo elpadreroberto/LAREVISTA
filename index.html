@@ -63,7 +63,44 @@ a:hover { text-decoration-thickness: 2px; }
   position: sticky; top: 0; z-index: 5;
   background: var(--bar); backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line);
-  padding: .7rem 1.2rem .85rem;
+  padding: .7rem 3.2rem .85rem 1.2rem;
+}
+.menu-abre {
+  position: absolute; top: .45rem; right: .55rem;
+  width: 2rem; height: 2rem; padding: 0;
+  border-radius: 8px;
+  background: var(--paper); color: var(--ink);
+  border: 1px solid var(--line);
+  display: grid; place-items: center;
+  z-index: 2;
+}
+.menu-abre:hover { border-color: var(--accent); }
+.menu-marca {
+  width: .9rem; height: .68rem;
+  background:
+    linear-gradient(var(--ink), var(--ink)) 0 0 / 100% 1.5px no-repeat,
+    linear-gradient(var(--ink), var(--ink)) 0 50% / 100% 1.5px no-repeat,
+    linear-gradient(var(--ink), var(--ink)) 0 100% / 68% 1.5px no-repeat;
+}
+html[data-menu="abierto"] .menu-marca {
+  background: none; width: auto; height: auto;
+  font-family: var(--ui); font-size: 1.25rem; line-height: 1;
+}
+html[data-menu="abierto"] .menu-marca::before { content: "×"; }
+html[data-menu="cerrado"] .barra {
+  position: fixed;
+  top: .5rem; left: .5rem; right: auto;
+  width: 2rem; height: 2rem;
+  padding: 0; border: 0;
+  background: transparent;
+  backdrop-filter: none;
+}
+html[data-menu="cerrado"] .menu-cuerpo { display: none; }
+html[data-menu="cerrado"] .menu-abre { inset: 0; }
+html[data-menu="cerrado"] h2.grupo,
+html[data-menu="cerrado"] .autor { scroll-margin-top: 2.6rem; }
+@media (max-width: 1120px) {
+  html[data-menu="cerrado"] main { padding-left: 3.2rem; }
 }
 .barra-fila {
   max-width: var(--page); margin: 0 auto;
@@ -233,11 +270,17 @@ try {
   if (l) document.documentElement.style.setProperty("--lead", l);
   if (m) document.documentElement.style.setProperty("--measure", m);
   if (g) document.documentElement.style.setProperty("--page", g);
+  var menu = localStorage.getItem("cr.menu");
+  document.documentElement.dataset.menu = menu === "abierto" ? "abierto" : "cerrado";
 } catch (e) {}
 </script>
 </head>
 <body data-vista="articulos">
 <header class="barra">
+  <button type="button" class="menu-abre" id="menu-abre" aria-controls="menu-cuerpo" aria-expanded="false" aria-label="Abrir menú" title="Abrir menú">
+    <span class="menu-marca" aria-hidden="true"></span>
+  </button>
+  <div class="menu-cuerpo" id="menu-cuerpo">
   <div class="barra-fila">
     <a class="marca" href="#articulos">LAREVISTA</a>
     <div class="anios">
@@ -271,7 +314,7 @@ try {
   <div class="barra-fila papas">
     <button type="button" data-papa="todos" aria-pressed="true">Todos</button>
 <button type="button" data-papa="leon13" title="1878–1903">León XIII</button><button type="button" data-papa="pio10" title="1903–1914">Pío X</button><button type="button" data-papa="benedicto15" title="1914–1922">Benedicto XV</button><button type="button" data-papa="pio11" title="1922–1939">Pío XI</button><button type="button" data-papa="pio12" title="1939–1958">Pío XII</button><button type="button" data-papa="juan23" title="1958–1963">Juan XXIII</button><button type="button" data-papa="pablo6" title="1963–1978">Pablo VI</button><button type="button" data-papa="juanpablo1" title="1978">Juan Pablo I</button><button type="button" data-papa="juanpablo2" title="1978–2005">Juan Pablo II</button><button type="button" data-papa="benedicto16" title="2005–2013">Benedicto XVI</button><button type="button" data-papa="francisco" title="2013–">Francisco</button>  </div>
-</header><main>
+</div></header><main>
 
 <section id="vista-articulos"><span id="articulos"></span>
   <div class="entrada">
@@ -130099,7 +130142,20 @@ en sus Bodas de Oro Sacerdotales</p>
       else a.removeAttribute("aria-current");
     });
     paintCiclos();
+    paintMenu();
   }
+  function paintMenu() {
+    var abierto = root.dataset.menu === "abierto";
+    var btn = document.getElementById("menu-abre");
+    btn.setAttribute("aria-expanded", abierto ? "true" : "false");
+    btn.setAttribute("aria-label", abierto ? "Cerrar menú" : "Abrir menú");
+    btn.setAttribute("title", abierto ? "Cerrar menú" : "Abrir menú");
+  }
+  document.getElementById("menu-abre").addEventListener("click", function () {
+    root.dataset.menu = root.dataset.menu === "abierto" ? "cerrado" : "abierto";
+    save("cr.menu", root.dataset.menu);
+    paintMenu();
+  });
   document.getElementById("ciclo-fuente").addEventListener("click", function () {
     var i = indexOfId(fonts, root.dataset.font || "serif");
     if (i < 0) i = 0;
